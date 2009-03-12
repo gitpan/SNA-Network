@@ -9,14 +9,16 @@ lib/SNA/Network/Edge.pm
 lib/SNA/Network/Filter/Pajek.pm
 lib/SNA/Network/Filter/Guess.pm
 lib/SNA/Network/Algorithm/HITS.pm
+lib/SNA/Network/Plugin/Test.pm
+lib/SNA/Network/Node/Plugin/Test.pm
 t/00-load.t
 t/01-network-basics.t
 t/02-filter-pajek.t
 t/03-filter-guess.t
 t/04-algorithm-hits.t
+t/05-plugins.t
 t/pod-coverage.t
 t/pod.t
 t/test-network-1.net
 t/test-network-1.gdf
-
 META.yml

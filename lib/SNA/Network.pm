@@ -14,6 +14,9 @@ use SNA::Network::Filter::Pajek;
 use SNA::Network::Filter::Guess;
 use SNA::Network::Algorithm::HITS;
 
+use Module::List::Pluggable qw(import_modules);
+import_modules('SNA::Network::Plugin');
+
 
 =head1 NAME
 
@@ -21,11 +24,11 @@ SNA::Network - A toolkit for Social Network Analysis
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 
 =head1 SYNOPSIS
@@ -217,6 +220,37 @@ sub delete_edges {
 }
 
 
+=head1 PLUGIN SYSTEM
+
+This package can be extenden with plugins,
+which gives you the possibility, to add your own algorithms, filters, and so on.
+Each class found in the namespace B<SNA::Network::Plugin>
+will be imported into the namespace of B<SNA::Network>,
+and each class found in the namespace B<SNA::Network::Node::Plugin>
+will be imported into the namespace of B<SNA::Network::Node>.
+With this mechanism, you can add methods to these classes.
+
+For example:
+
+	package SNA::Network::Plugin::Foo;
+
+	use warnings;
+	use strict;
+
+	require Exporter;
+	use base qw(Exporter);
+	our @EXPORT = qw(foo);
+
+	sub foo {
+		my ($self) = @_;
+		# $self is a reference to our network object
+		# do something with it here
+		...
+	}
+
+adds a new foo method to B<SNA::Network>.
+
+
 =head1 SEE ALSO
 
 =over 4
@@ -244,8 +278,6 @@ Darko Obradovic, C<< <dobradovic at gmx.de> >>
 Please report any bugs or feature requests to C<bug-sna-network at rt.cpan.org>, or through
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=SNA-Network>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
-
-
 
 
 =head1 SUPPORT

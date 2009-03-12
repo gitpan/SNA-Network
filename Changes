@@ -1,5 +1,8 @@
 Revision history for SNA-Network
 
-0.01    Date/time
-        First version, released on an unsuspecting world.
+0.02    2009-03-12 16:00:00
+      - Introduced support for network and node plugins
+
+0.01    2009-03-09 14:00:00
+      - First version, released on an unsuspecting world.
 

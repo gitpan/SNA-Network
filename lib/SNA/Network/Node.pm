@@ -3,6 +3,10 @@ package SNA::Network::Node;
 use warnings;
 use strict;
 
+use Module::List::Pluggable qw(import_modules);
+import_modules('SNA::Network::Node::Plugin');
+
+
 =head1 NAME
 
 SNA::Network::Node - Node class for SNA::Network

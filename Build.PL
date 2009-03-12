@@ -8,7 +8,8 @@ my $builder = Module::Build->new(
     dist_author         => 'Darko Obradovic <dobradovic@gmx.de>',
     dist_version_from   => 'lib/SNA/Network.pm',
     build_requires => {
-        'Test::More' => 0,
+        'Test::More'              => 0,
+        'Module::List::Pluggable' => 0,
     },
     add_to_cleanup      => [ 'SNA-Network-*' ],
     create_makefile_pl => 'traditional',
