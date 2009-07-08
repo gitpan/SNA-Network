@@ -1,8 +1,11 @@
 Revision history for SNA-Network
 
-0.02    2009-03-12 16:00:00
+0.03    2009-07-07
+      - Introduced weak component identification
+
+0.02    2009-03-12
       - Introduced support for network and node plugins
 
-0.01    2009-03-09 14:00:00
+0.01    2009-03-09
       - First version, released on an unsuspecting world.
 

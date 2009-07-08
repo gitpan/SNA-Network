@@ -9,6 +9,7 @@ my $builder = Module::Build->new(
     dist_version_from   => 'lib/SNA/Network.pm',
     build_requires => {
         'Test::More'              => 0,
+        'List::MoreUtils'         => 0,
         'Module::List::Pluggable' => 0,
     },
     add_to_cleanup      => [ 'SNA-Network-*' ],

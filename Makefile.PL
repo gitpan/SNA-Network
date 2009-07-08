@@ -5,6 +5,7 @@ WriteMakefile
           'NAME' => 'SNA::Network',
           'VERSION_FROM' => 'lib/SNA/Network.pm',
           'PREREQ_PM' => {
+                           'List::MoreUtils' => '0',
                            'Module::List::Pluggable' => '0',
                            'Test::More' => '0'
                          },

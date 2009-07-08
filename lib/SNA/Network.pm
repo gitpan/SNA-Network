@@ -12,6 +12,7 @@ use SNA::Network::Node;
 use SNA::Network::Edge;
 use SNA::Network::Filter::Pajek;
 use SNA::Network::Filter::Guess;
+use SNA::Network::Algorithm::Connectivity;
 use SNA::Network::Algorithm::HITS;
 
 use Module::List::Pluggable qw(import_modules);
@@ -24,11 +25,11 @@ SNA::Network - A toolkit for Social Network Analysis
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 
 =head1 SYNOPSIS
@@ -262,6 +263,8 @@ adds a new foo method to B<SNA::Network>.
 =item * L<SNA::Network::Filter::Pajek>
 
 =item * L<SNA::Network::Filter::Guess>
+
+=item * L<SNA::Network::Algorithm::Connectivity>
 
 =item * L<SNA::Network::Algorithm::HITS>
 

@@ -1,6 +1,6 @@
 ---
 name: SNA-Network
-version: 0.02
+version: 0.03
 author:
   - 'Darko Obradovic <dobradovic@gmx.de>'
 abstract: A toolkit for Social Network Analysis
@@ -8,12 +8,15 @@ license: perl
 resources:
   license: http://dev.perl.org/licenses/
 build_requires:
+  List::MoreUtils: 0
   Module::List::Pluggable: 0
   Test::More: 0
 provides:
   SNA::Network:
     file: lib/SNA/Network.pm
-    version: 0.02
+    version: 0.03
+  SNA::Network::Algorithm::Connectivity:
+    file: lib/SNA/Network/Algorithm/Connectivity.pm
   SNA::Network::Algorithm::HITS:
     file: lib/SNA/Network/Algorithm/HITS.pm
   SNA::Network::Edge:

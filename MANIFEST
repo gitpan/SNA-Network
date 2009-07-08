@@ -8,6 +8,7 @@ lib/SNA/Network/Node.pm
 lib/SNA/Network/Edge.pm
 lib/SNA/Network/Filter/Pajek.pm
 lib/SNA/Network/Filter/Guess.pm
+lib/SNA/Network/Algorithm/Connectivity.pm
 lib/SNA/Network/Algorithm/HITS.pm
 lib/SNA/Network/Plugin/Test.pm
 lib/SNA/Network/Node/Plugin/Test.pm
@@ -17,6 +18,7 @@ t/02-filter-pajek.t
 t/03-filter-guess.t
 t/04-algorithm-hits.t
 t/05-plugins.t
+t/06-algorithm-connectivity.t
 t/pod-coverage.t
 t/pod.t
 t/test-network-1.net
