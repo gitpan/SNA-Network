@@ -1,6 +1,6 @@
 ---
 name: SNA-Network
-version: 0.03
+version: 0.04
 author:
   - 'Darko Obradovic <dobradovic@gmx.de>'
 abstract: A toolkit for Social Network Analysis
@@ -14,7 +14,7 @@ build_requires:
 provides:
   SNA::Network:
     file: lib/SNA/Network.pm
-    version: 0.03
+    version: 0.04
   SNA::Network::Algorithm::Connectivity:
     file: lib/SNA/Network/Algorithm/Connectivity.pm
   SNA::Network::Algorithm::HITS:

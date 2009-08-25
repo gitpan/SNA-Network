@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 19;
+use Test::More tests => 23;
 
 use SNA::Network;
 
@@ -42,4 +42,21 @@ is(int $node_a->incoming_edges(), 0, 'node A direction');
 is(int $node_b->edges(), 1, 'node B connected');
 is(int $node_b->incoming_edges(), 1, 'node B direction');
 is(int $node_b->outgoing_edges(), 0, 'node B direction');
+
+
+# deleting nodes
+my $net2 = SNA::Network->new();
+$net2->load_from_pajek_net('t/test-network-2.net');
+$net2->delete_nodes($net2->node_at_index(2), $net2->node_at_index(4));
+is(int $net2->nodes(), 5, '5 nodes left');
+is(int $net2->edges(), 2, '2 edges left');
+
+
+# deleting edges in any arbitrary order
+my $net3 = SNA::Network->new();
+$net3->load_from_pajek_net('t/test-network-2.net');
+$net3->delete_edges( @{$net3->{edges}}[3,2,1] );
+is(int $net3->nodes(), 7, '7 nodes left');
+is(int $net3->edges(), 4, '4 edges left');
+
 

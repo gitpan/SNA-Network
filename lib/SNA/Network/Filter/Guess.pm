@@ -54,24 +54,27 @@ sub load_from_gdf {
 	# search start of node definitions
 	START:
 	while (defined($line = <$GDF_FILE>)) {
-		last START if $line =~ m/^nodedef> (.+)$/;
+		last START if $line =~ m/^nodedef>/;
 	}
 	$line =~ m/^nodedef> (.+)$/;
 	my ($name, $label, @fields) = split /,/, $1;
-	@fields = map { s/\s*(\w+).*/$1/ } @fields;
+	foreach (@fields) {
+		s/\s*(\w+).*/$1/
+	}
 	
 	# read nodes and create graph nodes
 	NODES:
 	while (defined($line = <$GDF_FILE>)) {
 		last NODES if $line =~ m/^edgedef> (.+)$/;
 
+		#chomp $line;
 		$line =~ s/\s//g;
 		my ($node_number, $node_name, @field_values) = split ',', $line;
 		
 		$self->create_node_at_index(
 			index => _extract_index($node_number),
 			name  => $node_name,
-			pairwise { $a => qq['$b'] } @fields, @field_values
+			(pairwise { ($a, $b) } @fields, @field_values)
 		);
 	}
 	
@@ -79,7 +82,9 @@ sub load_from_gdf {
 	$line =~ m/^edgedef> (.+)$/;
 	my ($node1, $node2);
 	($node1, $node2, @fields) = split /,/, $1;
-	@fields = map { s/\s*(\w+).*/$1/ } @fields;
+	foreach (@fields) {
+		s/\s*(\w+).*/$1/
+	}
 	
 	EDGES:
 	while (defined($line = <$GDF_FILE>)) {
@@ -90,7 +95,7 @@ sub load_from_gdf {
 		$self->create_edge(
 			source_index => _extract_index($source),
 			target_index => _extract_index($target),
-			pairwise { $a => qq['$b'] } @fields, @field_values
+			(pairwise { ($a, $b) } @fields, @field_values)
 		);
 	}
 
@@ -143,8 +148,8 @@ sub save_to_gdf {
 
 sub _extract_index {
 	my ($node_name) = @_;
-	$node_name =~ s/\w+(\d+)/$1/;
-	return $node_name - 1;
+	$node_name =~ m/\D+(\d+)/;
+	return $1 - 1;
 }
 
 

@@ -1,3 +1,4 @@
+.cvsignore
 Build.PL
 Changes
 MANIFEST
@@ -21,6 +22,8 @@ t/05-plugins.t
 t/06-algorithm-connectivity.t
 t/pod-coverage.t
 t/pod.t
+t/boilerplate.t
 t/test-network-1.net
 t/test-network-1.gdf
+t/test-network-2.net
 META.yml

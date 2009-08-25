@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 8;
+use Test::More tests => 10;
 
 use SNA::Network;
 
@@ -10,11 +10,14 @@ $net->load_from_gdf('t/test-network-1.gdf');
 is(int $net->nodes(), 4, 'nodes read');
 is(int $net->edges(), 6, 'edges read');
 is($net->node_at_index(3)->{name}, 'D', 'node D read');
+is($net->node_at_index(1)->{field1}, 'c', 'field1 read');
+is($net->node_at_index(2)->{field2}, 'f', 'field2 read');
+
 
 my ($edge1) = $net->edges();
 is($edge1->{weight}, 1, 'weight loaded');
 
-$net->save_to_gdf(filename => 't/test-network-1b.gdf', edge_fields => ['weight']);
+$net->save_to_gdf(filename => 't/test-network-1b.gdf', node_fields => ['field1','field2'], edge_fields => ['weight']);
 
 my $net_b = SNA::Network->new();
 $net_b->load_from_gdf('t/test-network-1b.gdf');

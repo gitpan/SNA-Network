@@ -44,7 +44,7 @@ sub identify_weak_components {
 	do {
 		_weakly_expand_node($remainder[0], $weak_component_id);
 		$weak_component_id += 1;
-		@remainder = grep { !defined $_->{weak_component_index} } @remainder;
+		@remainder = grep { !defined $_->{weak_component_id} } @remainder;
 	} while (@remainder > 0);
 	
 	return $weak_component_id;
@@ -54,14 +54,14 @@ sub identify_weak_components {
 sub _weakly_expand_node {
 	my ($node, $weak_component_id) = @_;
 	
-	$node->{weak_component_index} = $weak_component_id;
+	$node->{weak_component_id} = $weak_component_id;
 	my @to_expand = ($node);
 
 	while (@to_expand) {
 		my $next_node = shift @to_expand;
-		my @unassigned_related_nodes = grep { !defined $_->{weak_component_index} } $next_node->related_nodes();
+		my @unassigned_related_nodes = grep { !defined $_->{weak_component_id} } $next_node->related_nodes();
 		foreach (@unassigned_related_nodes) {
-			$_->{weak_component_index} = $weak_component_id;		
+			$_->{weak_component_id} = $weak_component_id;		
 		}
 		push @to_expand, @unassigned_related_nodes;
 	}

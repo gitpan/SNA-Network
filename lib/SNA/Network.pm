@@ -25,11 +25,11 @@ SNA::Network - A toolkit for Social Network Analysis
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 
 =head1 SYNOPSIS
@@ -119,7 +119,13 @@ sub create_edge {
 	my ($self, %params) = @_;
 	my $source_node = $self->node_at_index($params{source_index});
 	my $target_node = $self->node_at_index($params{target_index});
-	my $edge = SNA::Network::Edge->new( source => $source_node, target => $target_node, weight => $params{weight} || 1);
+	my $index = int @{ $self->{edges} };
+	my $edge = SNA::Network::Edge->new(
+		source => $source_node,
+		target => $target_node,
+		weight => $params{weight} || 1,
+		index  => $index,
+	);
 	push @{ $self->{edges} }, $edge;
 	push @{ $source_node->{edges} }, $edge;
 	push @{ $target_node->{edges} }, $edge;
@@ -183,11 +189,11 @@ sub delete_nodes {
 	$self->{nodes} = [ grep {
 		($nodes_to_delete[0] && $_ == $nodes_to_delete[0]) ? shift @nodes_to_delete && 0 : 1 
 	} $self->nodes() ];
-	$self->_restore_indexes();
+	$self->_restore_node_indexes();
 }
 
 
-sub _restore_indexes {
+sub _restore_node_indexes {
 	my ($self) = @_;
 	my $i = 0;
 	foreach ($self->nodes()) {
@@ -206,6 +212,11 @@ Delete the passed edge objects.
 sub delete_edges {
 	my ($self, @edges_to_delete) = @_;
 	
+	# edges need to be in order of the network's edges array
+	@edges_to_delete = sort {
+		$a->{index} <=> $b->{index}
+	} @edges_to_delete;
+	
 	foreach my $edge (@edges_to_delete) {
 		foreach my $node ( @{$edge}{qw(source target)} ) {
 			$_->{edges} = [ grep {
@@ -218,7 +229,20 @@ sub delete_edges {
 	$self->{edges} = [ grep {
 		($edges_to_delete[0] && $_ == $edges_to_delete[0]) ? shift @edges_to_delete && 0 : 1 
 	} $self->edges() ];
+	
+	$self->_restore_edge_indexes();
 }
+
+
+sub _restore_edge_indexes {
+	my ($self) = @_;
+	my $i = 0;
+	foreach ($self->edges()) {
+		$_->{index} = $i++;
+	}
+}
+
+
 
 
 =head1 PLUGIN SYSTEM

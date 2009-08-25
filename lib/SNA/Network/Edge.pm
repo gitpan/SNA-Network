@@ -35,6 +35,7 @@ sub new {
 	my ($package, %params) = @_;
 	croak unless defined $params{source};
 	croak unless defined $params{target};
+	croak unless defined $params{index};
 	$params{weight} ||= 1;
 	return bless { %params }, $package;
 }
