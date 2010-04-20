@@ -6,6 +6,7 @@ use strict;
 use Carp;
 use English;
 
+use Scalar::Util qw(weaken);
 use List::Util qw(sum);
 
 use SNA::Network::Node;
@@ -14,6 +15,7 @@ use SNA::Network::Filter::Pajek;
 use SNA::Network::Filter::Guess;
 use SNA::Network::Algorithm::Connectivity;
 use SNA::Network::Algorithm::HITS;
+use SNA::Network::Generator::ByDensity;
 
 use Module::List::Pluggable qw(import_modules);
 import_modules('SNA::Network::Plugin');
@@ -25,11 +27,11 @@ SNA::Network - A toolkit for Social Network Analysis
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 =head1 SYNOPSIS
@@ -111,6 +113,7 @@ sub create_node_at_index {
 
 Creates a new edge between nodes with the given B<source_index> and B<target_index>.
 A B<weight> is optional, it defaults to 1.
+Pass any additional attributes as key/value pairs.
 Returns the created L<SNA::Network::Edge> object.
 
 =cut
@@ -120,15 +123,22 @@ sub create_edge {
 	my $source_node = $self->node_at_index($params{source_index});
 	my $target_node = $self->node_at_index($params{target_index});
 	my $index = int @{ $self->{edges} };
+	my $weight = $params{weight} || 1;
+	delete $params{source_index};
+	delete $params{target_index};
+	delete $params{weight};
 	my $edge = SNA::Network::Edge->new(
 		source => $source_node,
 		target => $target_node,
-		weight => $params{weight} || 1,
+		weight => $weight,
 		index  => $index,
+		%params,
 	);
 	push @{ $self->{edges} }, $edge;
 	push @{ $source_node->{edges} }, $edge;
+	weaken $source_node->{edges}->[-1];
 	push @{ $target_node->{edges} }, $edge;
+	weaken $target_node->{edges}->[-1];
 	return $edge;
 }
 

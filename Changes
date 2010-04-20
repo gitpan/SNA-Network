@@ -1,5 +1,11 @@
 Revision history for SNA-Network
 
+0.05    2010-04-20
+      - Internal speed-up using hash keys directly instead of sub calls
+      - Changed node degree methods to ignore weights
+      - Introduced specific node degree methods respecting weights
+      - Fixed memory leak: networks with cycles were not freed after usage
+
 0.04    2009-08-25
       - Fixed edge deletion in some special cases
       - Added missing test file to MANIFEST

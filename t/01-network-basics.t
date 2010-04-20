@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 23;
+use Test::More tests => 29;
 
 use SNA::Network;
 
@@ -42,6 +42,15 @@ is(int $node_a->incoming_edges(), 0, 'node A direction');
 is(int $node_b->edges(), 1, 'node B connected');
 is(int $node_b->incoming_edges(), 1, 'node B direction');
 is(int $node_b->outgoing_edges(), 0, 'node B direction');
+
+# degrees
+is($node_a->in_degree, 0, 'node A indegree');
+is($node_a->out_degree, 1, 'node A outdegree');
+is($node_a->summed_degree, 1, 'node A summed degree');
+is($node_b->in_degree, 1, 'node B indegree');
+is($node_b->out_degree, 0, 'node B outdegree');
+is($node_b->summed_degree, 1, 'node B summed degree');
+
 
 
 # deleting nodes

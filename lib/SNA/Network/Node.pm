@@ -3,6 +3,8 @@ package SNA::Network::Node;
 use warnings;
 use strict;
 
+use List::Util qw(sum);
+
 use Module::List::Pluggable qw(import_modules);
 import_modules('SNA::Network::Node::Plugin');
 
@@ -82,7 +84,7 @@ Returns the list of L<SNA::Network::Edge> objects that point to this node.
 
 sub incoming_edges {
 	my ($self) = @_;
-	return grep { $_->target() == $self } ($self->edges());
+	return grep { $_->{target} == $self } $self->edges;
 }
 
 
@@ -107,7 +109,7 @@ Returns the list of L<SNA::Network::Edge> objects pointing from this node to oth
 
 sub outgoing_edges {
 	my ($self) = @_;
-	return grep { $_->source() == $self } ($self->edges());
+	return grep { $_->{source} == $self } $self->edges;
 }
 
 
@@ -126,40 +128,77 @@ sub outgoing_nodes {
 
 =head2 in_degree
 
-Returns the in-degree of this node, i.e. the sum of all incoming weights,
-or the number of incoming edges in the unweighted case.
+Returns the in-degree of this node, i.e. the number of incoming edges.
 
 =cut
 
 sub in_degree {
 	my ($self) = @_;
-	return sum map { $_->weight() } $self->incoming_edges();
+	return int $self->incoming_edges;
 }
 
 
 =head2 out_degree
 
-Returns the out-degree of this node, i.e. the sum of all outgoing weights
-or the number of outgoing edges in the unweighted case.
+Returns the out-degree of this node, i.e. the number of outgoing edges.
 
 =cut
 
 sub out_degree {
 	my ($self) = @_;
-	return sum map { $_->weight() } $self->outgoing_edges();
+	return int $self->outgoing_edges;
 }
 
 
 =head2 summed_degree
 
-Returns the summed degree of this node, i.e. the sum of all incoming and all outgoing weights
-or the number of associated edges in the unweighted case.
+Returns the summed degree of this node, i.e. the number of associated edges.
 
 =cut
 
 sub summed_degree {
 	my ($self) = @_;
-	return sum map { $_->weight() } ($self->edges());
+	return int $self->edges;
+}
+
+
+=head2 weighted_in_degree
+
+Returns the weighted in-degree of this node, i.e. the sum of all incoming edge weights.
+
+=cut
+
+sub weighted_in_degree {
+	my ($self) = @_;
+	return 0 unless $self->incoming_edges;
+	return sum map { $_->weight() } $self->incoming_edges;
+}
+
+
+=head2 weighted_out_degree
+
+Returns the weighted out-degree of this node, i.e. the sum of all outgoing edge weights.
+
+=cut
+
+sub weighted_out_degree {
+	my ($self) = @_;
+	return 0 unless $self->outgoing_edges;
+	return sum map { $_->weight() } $self->outgoing_edges;
+}
+
+
+=head2 weighted_summed_degree
+
+Returns the summed weighted degree of this node,
+i.e. the sum of all incoming and all outgoing edgeweights.
+
+=cut
+
+sub weighted_summed_degree {
+	my ($self) = @_;
+	return 0 unless $self->edges;
+	return sum map { $_->weight() } $self->edges;
 }
 
 
