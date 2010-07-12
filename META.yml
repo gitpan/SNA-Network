@@ -1,22 +1,23 @@
 ---
-name: SNA-Network
-version: 0.05
+abstract: 'A toolkit for Social Network Analysis'
 author:
   - 'Darko Obradovic <dobradovic@gmx.de>'
-abstract: A toolkit for Social Network Analysis
-license: perl
-resources:
-  license: http://dev.perl.org/licenses/
 build_requires:
   List::MoreUtils: 0
   Module::List::Pluggable: 0
   Test::More: 0
 configure_requires:
-  Module::Build: 0.35
+  Module::Build: 0.36
+generated_by: 'Module::Build version 0.3607'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: SNA-Network
 provides:
   SNA::Network:
     file: lib/SNA/Network.pm
-    version: 0.05
+    version: 0.06
   SNA::Network::Algorithm::Connectivity:
     file: lib/SNA/Network/Algorithm/Connectivity.pm
   SNA::Network::Algorithm::HITS:
@@ -35,7 +36,6 @@ provides:
     file: lib/SNA/Network/Node/Plugin/Test.pm
   SNA::Network::Plugin::Test:
     file: lib/SNA/Network/Plugin/Test.pm
-generated_by: Module::Build version 0.35
-meta-spec:
-  url: http://module-build.sourceforge.net/META-spec-v1.4.html
-  version: 1.4
+resources:
+  license: http://dev.perl.org/licenses/
+version: 0.06

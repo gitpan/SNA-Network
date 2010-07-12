@@ -27,11 +27,11 @@ SNA::Network - A toolkit for Social Network Analysis
 
 =head1 VERSION
 
-Version 0.05
+Version 0.06
 
 =cut
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 
 =head1 SYNOPSIS
@@ -229,9 +229,9 @@ sub delete_edges {
 	
 	foreach my $edge (@edges_to_delete) {
 		foreach my $node ( @{$edge}{qw(source target)} ) {
-			$_->{edges} = [ grep {
+			$node->{edges} = [ grep {
 				$_ != $edge
-			} @{ $_->{edges} } ]
+			} @{ $node->{edges} } ]
 		}
 	}
 	

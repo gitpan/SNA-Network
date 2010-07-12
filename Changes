@@ -1,5 +1,8 @@
 Revision history for SNA-Network
 
+0.06    2010-07-12
+      - Fixed bug in edge deletion: edges stayed in node's edge reference list
+
 0.05    2010-04-20
       - Internal speed-up using hash keys directly instead of sub calls
       - Changed node degree methods to ignore weights
