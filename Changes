@@ -1,5 +1,8 @@
 Revision history for SNA-Network
 
+0.07    2010-07-14
+      - Fixed memory leak in edge deletion
+
 0.06    2010-07-12
       - Fixed bug in edge deletion: edges stayed in node's edge reference list
 

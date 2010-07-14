@@ -1,8 +1,14 @@
 #!perl
 
-use Test::More tests => 31;
+use Test::More tests => 33;
+use Test::Memory::Cycle;
 
 use SNA::Network;
+use List::Util qw(sum);
+
+
+use Devel::Cycle;
+use Devel::Peek;
 
 my $net = SNA::Network->new();
 isa_ok($net, 'SNA::Network', 'test network');
@@ -57,10 +63,12 @@ is($node_b->summed_degree, 1, 'node B summed degree');
 my $net2 = SNA::Network->new();
 $net2->load_from_pajek_net('t/test-network-2.net');
 $net2->delete_nodes($net2->node_at_index(2), $net2->node_at_index(4));
+memory_cycle_ok($net2, "net contains memory cycles");
+
 is(int $net2->nodes(), 5, '5 nodes left');
 is(int $net2->edges(), 2, '2 edges left');
 
-
+	
 # deleting edges in any arbitrary order
 my $net3 = SNA::Network->new();
 $net3->load_from_pajek_net('t/test-network-2.net');
@@ -69,5 +77,6 @@ $net3->delete_edges( @{$net3->{edges}}[3,2,1] );
 is(int $net3->nodes(), 7, '7 nodes left');
 is(int $net3->edges(), 4, '4 edges left');
 is(int $net3->node_at_index(2)->edges, 1, '1 edge left at node C');
+is(sum( map { int $_->edges } $net3->nodes), 8, 'nodes contain 8 edge endpoints');
 
 

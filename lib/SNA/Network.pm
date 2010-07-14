@@ -27,11 +27,11 @@ SNA::Network - A toolkit for Social Network Analysis
 
 =head1 VERSION
 
-Version 0.06
+Version 0.07
 
 =cut
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 
 =head1 SYNOPSIS
@@ -222,6 +222,35 @@ Delete the passed edge objects.
 sub delete_edges {
 	my ($self, @edges_to_delete) = @_;
 	
+	foreach my $edge (@edges_to_delete) {
+	
+		# delete references in endpoint nodes
+		foreach my $node ( $edge->{source}, $edge->{target} ) {
+			$node->{edges} = [ grep {
+				$_ != $edge
+			} $node->edges ];
+			
+			for (0 .. int $node->edges - 1) {
+				weaken $node->{edges}->[$_];
+			}
+		}
+		
+		# delete references in edge index
+		$self->{edges} = [ grep {
+			$_ != $edge
+		} $self->edges ];
+	}
+	
+	
+	$self->_restore_edge_indexes;
+}
+
+
+=begin FASTER_ALTERNATIVE
+
+sub delete_edges {
+	my ($self, @edges_to_delete) = @_;
+	
 	# edges need to be in order of the network's edges array
 	@edges_to_delete = sort {
 		$a->{index} <=> $b->{index}
@@ -231,7 +260,11 @@ sub delete_edges {
 		foreach my $node ( @{$edge}{qw(source target)} ) {
 			$node->{edges} = [ grep {
 				$_ != $edge
-			} @{ $node->{edges} } ]
+			} @{ $node->{edges} } ];
+
+			for (0 .. int $node->edges - 1) {
+				weaken $node->{edges}->[$_];
+			}
 		}
 	}
 	
@@ -243,11 +276,13 @@ sub delete_edges {
 	$self->_restore_edge_indexes();
 }
 
+=cut
+
 
 sub _restore_edge_indexes {
 	my ($self) = @_;
 	my $i = 0;
-	foreach ($self->edges()) {
+	foreach ($self->edges) {
 		$_->{index} = $i++;
 	}
 }
