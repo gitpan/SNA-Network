@@ -1,10 +1,11 @@
 #!perl
 
-use Test::More tests => 33;
+use Test::More tests => 34;
 use Test::Memory::Cycle;
 
 use SNA::Network;
 use List::Util qw(sum);
+use List::MoreUtils qw(all);
 
 
 use Devel::Cycle;
@@ -78,5 +79,8 @@ is(int $net3->nodes(), 7, '7 nodes left');
 is(int $net3->edges(), 4, '4 edges left');
 is(int $net3->node_at_index(2)->edges, 1, '1 edge left at node C');
 is(sum( map { int $_->edges } $net3->nodes), 8, 'nodes contain 8 edge endpoints');
+
+ok(( all { length $_->source->{name} == 1 } $net3->edges ), 'all edge sources have names');
+
 
 

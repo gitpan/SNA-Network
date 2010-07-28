@@ -8,6 +8,7 @@ lib/SNA/Network/Edge.pm
 lib/SNA/Network/Filter/Guess.pm
 lib/SNA/Network/Filter/Pajek.pm
 lib/SNA/Network/Generator/ByDensity.pm
+lib/SNA/Network/Generator/ConfigurationModel.pm
 lib/SNA/Network/Node.pm
 lib/SNA/Network/Node/Plugin/Test.pm
 lib/SNA/Network/Plugin/Test.pm
@@ -24,6 +25,8 @@ t/03-filter-guess.t
 t/04-algorithm-hits.t
 t/05-plugins.t
 t/06-algorithm-connectivity.t
+t/07-generator-by-density.t
+t/08-generator-configuration-model.t
 t/boilerplate.t
 t/pod-coverage.t
 t/pod.t

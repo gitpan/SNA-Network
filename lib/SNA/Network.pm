@@ -15,7 +15,9 @@ use SNA::Network::Filter::Pajek;
 use SNA::Network::Filter::Guess;
 use SNA::Network::Algorithm::Connectivity;
 use SNA::Network::Algorithm::HITS;
+use SNA::Network::Algorithm::PageRank;
 use SNA::Network::Generator::ByDensity;
+use SNA::Network::Generator::ConfigurationModel;
 
 use Module::List::Pluggable qw(import_modules);
 import_modules('SNA::Network::Plugin');
@@ -27,11 +29,11 @@ SNA::Network - A toolkit for Social Network Analysis
 
 =head1 VERSION
 
-Version 0.07
+Version 0.08
 
 =cut
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 
 =head1 SYNOPSIS

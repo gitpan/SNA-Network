@@ -1,27 +1,31 @@
 Revision history for SNA-Network
 
-0.07    2010-07-14
+0.08  2010-07-28
+      - Fixed missing dependency Test::Mem::Cycle
+      - Added PageRank Algorithm
+
+0.07  2010-07-14
       - Fixed memory leak in edge deletion
 
-0.06    2010-07-12
+0.06  2010-07-12
       - Fixed bug in edge deletion: edges stayed in node's edge reference list
 
-0.05    2010-04-20
+0.05  2010-04-20
       - Internal speed-up using hash keys directly instead of sub calls
       - Changed node degree methods to ignore weights
       - Introduced specific node degree methods respecting weights
       - Fixed memory leak: networks with cycles were not freed after usage
 
-0.04    2009-08-25
+0.04  2009-08-25
       - Fixed edge deletion in some special cases
       - Added missing test file to MANIFEST
 
-0.03    2009-07-07
+0.03  2009-07-07
       - Introduced weak component identification
 
-0.02    2009-03-12
+0.02  2009-03-12
       - Introduced support for network and node plugins
 
-0.01    2009-03-09
+0.01  2009-03-09
       - First version, released on an unsuspecting world.
 

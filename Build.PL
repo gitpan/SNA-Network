@@ -11,6 +11,7 @@ my $builder = Module::Build->new(
         'Test::More'              => 0,
         'List::MoreUtils'         => 0,
         'Module::List::Pluggable' => 0,
+        'Test::Memory::Cycle'     => 0,
     },
     add_to_cleanup      => [ 'SNA-Network-*' ],
     create_makefile_pl => 'traditional',
