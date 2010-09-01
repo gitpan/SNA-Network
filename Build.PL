@@ -12,6 +12,7 @@ my $builder = Module::Build->new(
         'List::MoreUtils'         => 0,
         'Module::List::Pluggable' => 0,
         'Test::Memory::Cycle'     => 0,
+        'Object::Tiny::XS'        => 0,
     },
     add_to_cleanup      => [ 'SNA-Network-*' ],
     create_makefile_pl => 'traditional',

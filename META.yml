@@ -5,6 +5,7 @@ author:
 build_requires:
   List::MoreUtils: 0
   Module::List::Pluggable: 0
+  Object::Tiny::XS: 0
   Test::Memory::Cycle: 0
   Test::More: 0
 configure_requires:
@@ -18,7 +19,7 @@ name: SNA-Network
 provides:
   SNA::Network:
     file: lib/SNA/Network.pm
-    version: 0.08
+    version: 0.09
   SNA::Network::Algorithm::Connectivity:
     file: lib/SNA/Network/Algorithm/Connectivity.pm
   SNA::Network::Algorithm::HITS:
@@ -43,4 +44,4 @@ provides:
     file: lib/SNA/Network/Plugin/Test.pm
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.08
+version: 0.09

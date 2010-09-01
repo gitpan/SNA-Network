@@ -29,11 +29,11 @@ SNA::Network - A toolkit for Social Network Analysis
 
 =head1 VERSION
 
-Version 0.08
+Version 0.09
 
 =cut
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 
 =head1 SYNOPSIS
@@ -122,10 +122,10 @@ Returns the created L<SNA::Network::Edge> object.
 
 sub create_edge {
 	my ($self, %params) = @_;
-	my $source_node = $self->node_at_index($params{source_index});
-	my $target_node = $self->node_at_index($params{target_index});
+	my $source_node = $self->node_at_index( $params{source_index} );
+	my $target_node = $self->node_at_index( $params{target_index} );
 	my $index = int @{ $self->{edges} };
-	my $weight = $params{weight} || 1;
+	my $weight = $params{weight};
 	delete $params{source_index};
 	delete $params{target_index};
 	delete $params{weight};
@@ -137,10 +137,10 @@ sub create_edge {
 		%params,
 	);
 	push @{ $self->{edges} }, $edge;
-	push @{ $source_node->{edges} }, $edge;
-	weaken $source_node->{edges}->[-1];
-	push @{ $target_node->{edges} }, $edge;
-	weaken $target_node->{edges}->[-1];
+	push @{ $source_node->{outgoing_edges} }, $edge;
+	weaken $source_node->{outgoing_edges}->[-1];
+	push @{ $target_node->{incoming_edges} }, $edge;
+	weaken $target_node->{incoming_edges}->[-1];
 	return $edge;
 }
 
@@ -227,14 +227,21 @@ sub delete_edges {
 	foreach my $edge (@edges_to_delete) {
 	
 		# delete references in endpoint nodes
-		foreach my $node ( $edge->{source}, $edge->{target} ) {
-			$node->{edges} = [ grep {
-				$_ != $edge
-			} $node->edges ];
-			
-			for (0 .. int $node->edges - 1) {
-				weaken $node->{edges}->[$_];
-			}
+
+		$edge->source->{outgoing_edges} = [ grep {
+			$_ != $edge
+		} $edge->source->outgoing_edges ];
+		
+		for (0 .. int $edge->source->outgoing_edges - 1) {
+			weaken $edge->source->{outgoing_edges}->[$_];
+		}
+
+		$edge->target->{incoming_edges} = [ grep {
+			$_ != $edge
+		} $edge->target->incoming_edges ];
+		
+		for (0 .. int $edge->target->incoming_edges - 1) {
+			weaken $edge->target->{incoming_edges}->[$_];
 		}
 		
 		# delete references in edge index
@@ -246,39 +253,6 @@ sub delete_edges {
 	
 	$self->_restore_edge_indexes;
 }
-
-
-=begin FASTER_ALTERNATIVE
-
-sub delete_edges {
-	my ($self, @edges_to_delete) = @_;
-	
-	# edges need to be in order of the network's edges array
-	@edges_to_delete = sort {
-		$a->{index} <=> $b->{index}
-	} @edges_to_delete;
-	
-	foreach my $edge (@edges_to_delete) {
-		foreach my $node ( @{$edge}{qw(source target)} ) {
-			$node->{edges} = [ grep {
-				$_ != $edge
-			} @{ $node->{edges} } ];
-
-			for (0 .. int $node->edges - 1) {
-				weaken $node->{edges}->[$_];
-			}
-		}
-	}
-	
-	# somewhat tricky: delete when matched first edge_to_delete and shift it in that case
-	$self->{edges} = [ grep {
-		($edges_to_delete[0] && $_ == $edges_to_delete[0]) ? shift @edges_to_delete && 0 : 1 
-	} $self->edges() ];
-	
-	$self->_restore_edge_indexes();
-}
-
-=cut
 
 
 sub _restore_edge_indexes {

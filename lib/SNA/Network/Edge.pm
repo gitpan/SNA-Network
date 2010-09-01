@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use Carp qw(croak);
-
+use Object::Tiny::XS qw(source target weight);
 
 =head1 NAME
 
@@ -36,7 +36,7 @@ sub new {
 	croak unless defined $params{source};
 	croak unless defined $params{target};
 	croak unless defined $params{index};
-	$params{weight} ||= 1;
+	$params{weight} = 1 unless defined $params{weight};
 	return bless { %params }, $package;
 }
 
@@ -45,37 +45,14 @@ sub new {
 
 Returns the source node object of the edge.
 
-=cut
-
-sub source {
-	my ($self) = @_;
-	return $self->{source};
-}
-
 
 =head2 target
 
 Returns the target node object of the edge.
 
-=cut
-
-sub target {
-	my ($self) = @_;
-	return $self->{target};
-}
-
-
 =head2 weight
 
 Returns the weight of the edge.
-
-=cut
-
-sub weight {
-	my ($self) = @_;
-	return $self->{weight};
-}
-
 
 
 =head1 AUTHOR

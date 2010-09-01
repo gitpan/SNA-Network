@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 34;
+use Test::More tests => 35;
 use Test::Memory::Cycle;
 
 use SNA::Network;
@@ -38,7 +38,6 @@ is($edge->target(), $node_b, 'target connected');
 is($edge->weight(), 1, 'weight created');
 
 is(int $net->edges(), 1, 'edges created');
-
 
 # network structure
 
@@ -83,4 +82,8 @@ is(sum( map { int $_->edges } $net3->nodes), 8, 'nodes contain 8 edge endpoints'
 ok(( all { length $_->source->{name} == 1 } $net3->edges ), 'all edge sources have names');
 
 
+# 0-weight edges
+my $net4 = SNA::Network->new();
+$net4->load_from_pajek_net('t/test-network-3.net');
+is($net4->{edges}->[0]->weight, 0, "0 weight loaded correctly");
 

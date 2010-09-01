@@ -1,5 +1,9 @@
 Revision history for SNA-Network
 
+0.09  2010-09-01
+      - internal changes to improve speed, API unaffected
+      - use of Object::Tiny::XS for accessors
+
 0.08  2010-07-28
       - Fixed missing dependency Test::Mem::Cycle
       - Added PageRank Algorithm

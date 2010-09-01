@@ -4,6 +4,8 @@ use warnings;
 use strict;
 
 use List::Util qw(sum);
+use Object::Tiny::XS qw(index);
+
 
 use Module::List::Pluggable qw(import_modules);
 import_modules('SNA::Network::Node::Plugin');
@@ -36,20 +38,13 @@ creates a new node with the given named parameters.
 
 sub new {
 	my ($package, %params) = @_;
-	return bless { %params, edges => [] }, $package;
+	return bless { %params, outgoing_edges => [], incoming_edges => [] }, $package;
 }
 
 
 =head2 index
 
 Returns the index of the node
-
-=cut
-
-sub index {
-	my ($self) = @_;
-	return $self->{index};
-}
 
 
 =head2 edges
@@ -60,7 +55,9 @@ Returns the list of L<SNA::Network::Edge> objects associated with this node.
 
 sub edges {
 	my ($self) = @_;
-	return @{$self->{edges}};
+	#FIXME why does that not work???
+	return map { $_ } $self->outgoing_edges, $self->incoming_edges;
+#	return($self->outgoing_edges, $self->incoming_edges);
 }
 
 
@@ -72,7 +69,7 @@ Returns the list of L<SNA::Network::Node> objects that are linked to this node i
 
 sub related_nodes {
 	my ($self) = @_;
-	return map { $_->source() == $self ? $_->target() : $_->source() } ($self->edges());
+	return (map { $_->source } $self->incoming_edges), map { $_->target } $self->outgoing_edges;
 }
 
 
@@ -84,7 +81,7 @@ Returns the list of L<SNA::Network::Edge> objects that point to this node.
 
 sub incoming_edges {
 	my ($self) = @_;
-	return grep { $_->{target} == $self } $self->edges;
+	return @{ $self->{incoming_edges} };
 }
 
 
@@ -96,7 +93,7 @@ Returns the list of L<SNA::Network::Node> objects that point to this node via an
 
 sub incoming_nodes {
 	my ($self) = @_;
-	return map { $_->source() } ($self->incoming_edges());
+	return map { $_->source } $self->incoming_edges;
 
 }
 
@@ -109,7 +106,7 @@ Returns the list of L<SNA::Network::Edge> objects pointing from this node to oth
 
 sub outgoing_edges {
 	my ($self) = @_;
-	return grep { $_->{source} == $self } $self->edges;
+	return @{ $self->{outgoing_edges} };
 }
 
 
@@ -121,7 +118,7 @@ Returns the list of L<SNA::Network::Node> objects that this node points to via a
 
 sub outgoing_nodes {
 	my ($self) = @_;
-	return map { $_->target() } ($self->outgoing_edges());
+	return map { $_->target } $self->outgoing_edges;
 
 }
 
@@ -171,7 +168,7 @@ Returns the weighted in-degree of this node, i.e. the sum of all incoming edge w
 sub weighted_in_degree {
 	my ($self) = @_;
 	return 0 unless $self->incoming_edges;
-	return sum map { $_->weight() } $self->incoming_edges;
+	return sum map { $_->weight } $self->incoming_edges;
 }
 
 
@@ -184,7 +181,7 @@ Returns the weighted out-degree of this node, i.e. the sum of all outgoing edge 
 sub weighted_out_degree {
 	my ($self) = @_;
 	return 0 unless $self->outgoing_edges;
-	return sum map { $_->weight() } $self->outgoing_edges;
+	return sum map { $_->weight } $self->outgoing_edges;
 }
 
 

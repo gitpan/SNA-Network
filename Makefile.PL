@@ -7,6 +7,7 @@ WriteMakefile
           'PREREQ_PM' => {
                            'List::MoreUtils' => 0,
                            'Module::List::Pluggable' => 0,
+                           'Object::Tiny::XS' => 0,
                            'Test::Memory::Cycle' => 0,
                            'Test::More' => 0
                          },
