@@ -5,7 +5,7 @@ use warnings;
 
 require Exporter;
 use base qw(Exporter);
-our @EXPORT = qw(calculate_pageranks);
+our @EXPORT = qw(calculate_pageranks calculate_weighted_pageranks);
 
 use List::Util qw(sum);
 
@@ -44,7 +44,8 @@ sub calculate_pageranks {
 	my ($self, %params) = @_;
 	
 	my $iterations = $params{iterations} || 20;
-	my $damping = $params{damping} || 0.15;
+	my $damping = $params{damping};
+	$damping = 0.15 unless defined $damping;
 
 	my $num_nodes = int $self->nodes;
 
@@ -58,7 +59,7 @@ sub calculate_pageranks {
 
 	# iterative approximation
 	for (1 .. $iterations) {
-		my $sinks_pr = sum map { $_->{pagerank} } @sink_nodes;
+		my $sinks_pr = sum 0, map { $_->{pagerank} } @sink_nodes;
 		my $pr_from_sinks = $sinks_pr / $num_nodes;
 		my $flowing_pr = $num_nodes - $sinks_pr;
 		my $pr_from_jumps = $flowing_pr * $damping / $num_nodes;
@@ -67,6 +68,61 @@ sub calculate_pageranks {
 			my $incoming_pr = sum map {
 				(1 - $damping) * $_->{pagerank} / $_->out_degree
 			} $node->incoming_nodes;
+			$incoming_pr ||= 0;
+			$node->{new_pr} = $pr_from_jumps + $pr_from_sinks + $incoming_pr;
+		}
+		
+		# copy new values
+		foreach my $node ($self->nodes) {
+			$node->{pagerank} = $node->{new_pr};
+		}
+	}
+}
+
+
+=head2 calculate_weighted_pageranks
+
+Intuitive extension of PageRank to weighted networks.
+
+Same as above, but treating edge weights as relative probabilities
+for the node transitions.
+Stores the values under the hash entry B<pagerank> for each node object,
+the same key as above!
+
+You can pass the same parameters as above.
+
+On a weighted network, you usually want this method's values'.
+
+=cut
+
+sub calculate_weighted_pageranks {
+	my ($self, %params) = @_;
+	
+	my $iterations = $params{iterations} || 20;
+	my $damping = $params{damping};
+	$damping = 0.15 unless defined $damping;
+
+	my $num_nodes = int $self->nodes;
+
+	# sink nodes (nodes without successors) result into a random jumo
+	my @sink_nodes = grep { $_->out_degree == 0 } $self->nodes;
+	
+	# start with 1.0 for each node
+	foreach my $node ($self->nodes) {
+		$node->{pagerank} = 1.0;
+	}
+
+	# iterative approximation
+	for (1 .. $iterations) {
+		my $sinks_pr = sum 0, map { $_->{pagerank} } @sink_nodes;
+		my $pr_from_sinks = $sinks_pr / $num_nodes;
+		my $flowing_pr = $num_nodes - $sinks_pr;
+		my $pr_from_jumps = $flowing_pr * $damping / $num_nodes;
+	
+		foreach my $node ($self->nodes) {
+			my $incoming_pr = (1 - $damping) * sum map {
+				$_->source->{pagerank} * $_->weight / $_->source->weighted_out_degree
+			} $node->incoming_edges;
 			$incoming_pr ||= 0;
 			$node->{new_pr} = $pr_from_jumps + $pr_from_sinks + $incoming_pr;
 		}

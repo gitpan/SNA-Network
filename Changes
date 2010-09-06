@@ -1,5 +1,11 @@
 Revision history for SNA-Network
 
+0.10  2010-09-06
+      - fixed bug in PageRank calculation without any sink nodes
+      - fixed bug in PageRank calculation with a damping factor of 0
+      - added special PageRank calculation for weighted networks
+      - fixed bug in repeated identification of weak components after a change of network structure
+
 0.09  2010-09-01
       - internal changes to improve speed, API unaffected
       - use of Object::Tiny::XS for accessors

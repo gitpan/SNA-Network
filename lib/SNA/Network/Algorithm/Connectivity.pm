@@ -39,6 +39,11 @@ Returns the number of weak components found in the network.
 
 sub identify_weak_components {
 	my ($self) = @_;
+	
+	foreach ($self->nodes) {
+		undef $_->{weak_component_id};
+	}
+	
 	my $weak_component_id = 0;
 	my @remainder = $self->nodes();
 	do {
