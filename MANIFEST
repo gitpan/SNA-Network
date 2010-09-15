@@ -2,6 +2,7 @@
 Build.PL
 Changes
 lib/SNA/Network.pm
+lib/SNA/Network/Algorithm/Betweenness.pm
 lib/SNA/Network/Algorithm/Connectivity.pm
 lib/SNA/Network/Algorithm/HITS.pm
 lib/SNA/Network/Algorithm/PageRank.pm
@@ -29,6 +30,7 @@ t/06-algorithm-connectivity.t
 t/07-generator-by-density.t
 t/08-generator-configuration-model.t
 t/09-algorithm-pagerank.t
+t/10-algorithm-betweenness.t
 t/boilerplate.t
 t/pod-coverage.t
 t/pod.t

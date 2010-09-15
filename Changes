@@ -1,5 +1,8 @@
 Revision history for SNA-Network
 
+0.11  2010-09-15
+      - added algorithm for betweenness centrality
+
 0.10  2010-09-06
       - fixed bug in PageRank calculation without any sink nodes
       - fixed bug in PageRank calculation with a damping factor of 0

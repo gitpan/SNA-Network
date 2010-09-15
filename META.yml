@@ -19,7 +19,9 @@ name: SNA-Network
 provides:
   SNA::Network:
     file: lib/SNA/Network.pm
-    version: 0.10
+    version: 0.11
+  SNA::Network::Algorithm::Betweenness:
+    file: lib/SNA/Network/Algorithm/Betweenness.pm
   SNA::Network::Algorithm::Connectivity:
     file: lib/SNA/Network/Algorithm/Connectivity.pm
   SNA::Network::Algorithm::HITS:
@@ -44,4 +46,4 @@ provides:
     file: lib/SNA/Network/Plugin/Test.pm
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.10
+version: 0.11

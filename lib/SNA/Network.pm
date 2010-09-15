@@ -13,6 +13,7 @@ use SNA::Network::Node;
 use SNA::Network::Edge;
 use SNA::Network::Filter::Pajek;
 use SNA::Network::Filter::Guess;
+use SNA::Network::Algorithm::Betweenness;
 use SNA::Network::Algorithm::Connectivity;
 use SNA::Network::Algorithm::HITS;
 use SNA::Network::Algorithm::PageRank;
@@ -29,11 +30,11 @@ SNA::Network - A toolkit for Social Network Analysis
 
 =head1 VERSION
 
-Version 0.10
+Version 0.11
 
 =cut
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 
 =head1 SYNOPSIS
