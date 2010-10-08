@@ -1,5 +1,9 @@
 Revision history for SNA-Network
 
+0.12  2010-10-08
+      - added missing test network
+      - linked all submodules in the main documentation
+
 0.11  2010-09-15
       - added algorithm for betweenness centrality
 

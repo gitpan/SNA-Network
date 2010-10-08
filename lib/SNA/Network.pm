@@ -30,11 +30,11 @@ SNA::Network - A toolkit for Social Network Analysis
 
 =head1 VERSION
 
-Version 0.11
+Version 0.12
 
 =cut
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 
 =head1 SYNOPSIS
@@ -310,9 +310,17 @@ adds a new foo method to B<SNA::Network>.
 
 =item * L<SNA::Network::Filter::Guess>
 
+=item * L<SNA::Network::Algorithm::Betweenness>
+
 =item * L<SNA::Network::Algorithm::Connectivity>
 
 =item * L<SNA::Network::Algorithm::HITS>
+
+=item * L<SNA::Network::Algorithm::PageRank>
+
+=item * L<SNA::Network::Generator::ByDensity>
+
+=item * L<SNA::Network::Generator::ConfigurationModel>
 
 =back
 
