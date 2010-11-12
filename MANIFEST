@@ -4,6 +4,7 @@ Changes
 lib/SNA/Network.pm
 lib/SNA/Network/Algorithm/Betweenness.pm
 lib/SNA/Network/Algorithm/Connectivity.pm
+lib/SNA/Network/Algorithm/Cores.pm
 lib/SNA/Network/Algorithm/HITS.pm
 lib/SNA/Network/Algorithm/PageRank.pm
 lib/SNA/Network/Edge.pm
@@ -31,6 +32,7 @@ t/07-generator-by-density.t
 t/08-generator-configuration-model.t
 t/09-algorithm-pagerank.t
 t/10-algorithm-betweenness.t
+t/11-algorithm-cores.t
 t/boilerplate.t
 t/pod-coverage.t
 t/pod.t
@@ -39,4 +41,5 @@ t/test-network-1.net
 t/test-network-2.net
 t/test-network-3.net
 t/test-network-4.net
+t/test-network-5.net
 

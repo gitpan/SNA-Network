@@ -1,5 +1,8 @@
 Revision history for SNA-Network
 
+0.13  2010-11-12
+      - added algorithm for in-core collapse sequence
+
 0.12  2010-10-08
       - added missing test network
       - linked all submodules in the main documentation

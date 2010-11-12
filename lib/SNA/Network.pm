@@ -15,6 +15,7 @@ use SNA::Network::Filter::Pajek;
 use SNA::Network::Filter::Guess;
 use SNA::Network::Algorithm::Betweenness;
 use SNA::Network::Algorithm::Connectivity;
+use SNA::Network::Algorithm::Cores;
 use SNA::Network::Algorithm::HITS;
 use SNA::Network::Algorithm::PageRank;
 use SNA::Network::Generator::ByDensity;
@@ -30,11 +31,11 @@ SNA::Network - A toolkit for Social Network Analysis
 
 =head1 VERSION
 
-Version 0.12
+Version 0.13
 
 =cut
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 
 =head1 SYNOPSIS
@@ -313,6 +314,8 @@ adds a new foo method to B<SNA::Network>.
 =item * L<SNA::Network::Algorithm::Betweenness>
 
 =item * L<SNA::Network::Algorithm::Connectivity>
+
+=item * L<SNA::Network::Algorithm::Cores>
 
 =item * L<SNA::Network::Algorithm::HITS>
 
