@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 35;
+use Test::More tests => 42;
 use Test::Memory::Cycle;
 
 use SNA::Network;
@@ -13,6 +13,8 @@ use Devel::Peek;
 
 my $net = SNA::Network->new();
 isa_ok($net, 'SNA::Network', 'test network');
+
+my $net2 = SNA::Network->new();
 
 # nodes
 
@@ -27,6 +29,22 @@ is($node_b->index(), 1, 'index created');
 is($node_b->{name}, 'B', 'name created');
 
 is(int $net->nodes(), 2, 'nodes created');
+
+
+# node creation with automatic indexing
+
+my $node_c = $net2->create_node(name => 'C');
+isa_ok($node_c, 'SNA::Network::Node', 'test node C');
+is($node_c->index, 0, 'index created');
+is($node_c->{name}, 'C', 'name created');
+
+my $node_d = $net2->create_node(name => 'D');
+isa_ok($node_d, 'SNA::Network::Node', 'test node D');
+is($node_d->index, 1, 'index created');
+is($node_d->{name}, 'D', 'name created');
+
+is(int $net2->nodes, 2, 'nodes created');
+
 
 
 # edges
@@ -60,30 +78,30 @@ is($node_b->summed_degree, 1, 'node B summed degree');
 
 
 # deleting nodes
-my $net2 = SNA::Network->new();
-$net2->load_from_pajek_net('t/test-network-2.net');
-$net2->delete_nodes($net2->node_at_index(2), $net2->node_at_index(4));
-memory_cycle_ok($net2, "net contains memory cycles");
+my $net3 = SNA::Network->new();
+$net3->load_from_pajek_net('t/test-network-2.net');
+$net3->delete_nodes($net3->node_at_index(2), $net3->node_at_index(4));
+memory_cycle_ok($net3, "net contains memory cycles");
 
-is(int $net2->nodes(), 5, '5 nodes left');
-is(int $net2->edges(), 2, '2 edges left');
+is(int $net3->nodes(), 5, '5 nodes left');
+is(int $net3->edges(), 2, '2 edges left');
 
 	
 # deleting edges in any arbitrary order
-my $net3 = SNA::Network->new();
-$net3->load_from_pajek_net('t/test-network-2.net');
-is(int $net3->node_at_index(2)->edges, 4, '4 edges at node C');
-$net3->delete_edges( @{$net3->{edges}}[3,2,1] );
-is(int $net3->nodes(), 7, '7 nodes left');
-is(int $net3->edges(), 4, '4 edges left');
-is(int $net3->node_at_index(2)->edges, 1, '1 edge left at node C');
-is(sum( map { int $_->edges } $net3->nodes), 8, 'nodes contain 8 edge endpoints');
+my $net4 = SNA::Network->new();
+$net4->load_from_pajek_net('t/test-network-2.net');
+is(int $net4->node_at_index(2)->edges, 4, '4 edges at node C');
+$net4->delete_edges( @{$net4->{edges}}[3,2,1] );
+is(int $net4->nodes(), 7, '7 nodes left');
+is(int $net4->edges(), 4, '4 edges left');
+is(int $net4->node_at_index(2)->edges, 1, '1 edge left at node C');
+is(sum( map { int $_->edges } $net4->nodes), 8, 'nodes contain 8 edge endpoints');
 
-ok(( all { length $_->source->{name} == 1 } $net3->edges ), 'all edge sources have names');
+ok(( all { length $_->source->{name} == 1 } $net4->edges ), 'all edge sources have names');
 
 
 # 0-weight edges
-my $net4 = SNA::Network->new();
-$net4->load_from_pajek_net('t/test-network-3.net');
-is($net4->{edges}->[0]->weight, 0, "0 weight loaded correctly");
+my $net5 = SNA::Network->new();
+$net5->load_from_pajek_net('t/test-network-3.net');
+is($net5->{edges}->[0]->weight, 0, "0 weight loaded correctly");
 

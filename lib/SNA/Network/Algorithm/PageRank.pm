@@ -51,11 +51,11 @@ sub calculate_pageranks {
 
 	# sink nodes (nodes without successors) result into a random jumo
 	my @sink_nodes = grep { $_->out_degree == 0 } $self->nodes;
+	my @non_sinks = grep { $_->out_degree > 0 } $self->nodes;
 	
 	# start with 1.0 for each node
 	foreach my $node ($self->nodes) {
-		$node->{pagerank} = 1.0;
-	}
+		$node->{pagerank} = 1.0;	}
 
 	# iterative approximation
 	for (1 .. $iterations) {
@@ -65,11 +65,14 @@ sub calculate_pageranks {
 		my $pr_from_jumps = $flowing_pr * $damping / $num_nodes;
 	
 		foreach my $node ($self->nodes) {
-			my $incoming_pr = sum map {
-				(1 - $damping) * $_->{pagerank} / $_->out_degree
-			} $node->incoming_nodes;
-			$incoming_pr ||= 0;
-			$node->{new_pr} = $pr_from_jumps + $pr_from_sinks + $incoming_pr;
+			$node->{new_pr} = $pr_from_jumps + $pr_from_sinks;
+		}
+
+		foreach my $node (@non_sinks) {
+			my $outgoing_pr = (1 - $damping) * $node->{pagerank} / $node->out_degree;
+			foreach my $successor ($node->outgoing_nodes) {
+				$successor->{new_pr} += $outgoing_pr;
+			}
 		}
 		
 		# copy new values
@@ -106,6 +109,7 @@ sub calculate_weighted_pageranks {
 
 	# sink nodes (nodes without successors) result into a random jumo
 	my @sink_nodes = grep { $_->out_degree == 0 } $self->nodes;
+	my @non_sinks = grep { $_->out_degree > 0 } $self->nodes;
 	
 	# start with 1.0 for each node
 	foreach my $node ($self->nodes) {
@@ -120,11 +124,14 @@ sub calculate_weighted_pageranks {
 		my $pr_from_jumps = $flowing_pr * $damping / $num_nodes;
 	
 		foreach my $node ($self->nodes) {
-			my $incoming_pr = (1 - $damping) * sum map {
-				$_->source->{pagerank} * $_->weight / $_->source->weighted_out_degree
-			} $node->incoming_edges;
-			$incoming_pr ||= 0;
-			$node->{new_pr} = $pr_from_jumps + $pr_from_sinks + $incoming_pr;
+			$node->{new_pr} = $pr_from_jumps + $pr_from_sinks;
+		}
+
+		foreach my $node (@non_sinks) {
+			my $outgoing_pr = (1 - $damping) * $node->{pagerank} / $node->weighted_out_degree;
+			foreach my $outgoing_link ($node->outgoing_edges) {
+				$outgoing_link->target->{new_pr} += $outgoing_pr * $outgoing_link->weight;
+			}
 		}
 		
 		# copy new values

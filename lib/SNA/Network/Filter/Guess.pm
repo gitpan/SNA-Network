@@ -5,7 +5,7 @@ use warnings;
 
 require Exporter;
 use base qw(Exporter);
-our @EXPORT = qw(load_from_gdf save_to_gdf);
+our @EXPORT = qw(load_from_gdf new_from_gdf save_to_gdf);
 
 use Carp;
 use English;
@@ -23,6 +23,9 @@ SNA::Network::Filter::Guess - load and save networks from/to Guess .gdf files
 
     my $net = SNA::Network->new();
     $net->load_from_gdf($filename);
+    ...
+    # shortcut
+    my $net = SNA::Network->new_from_gdf($filename);
     ...
     $net->save_to_gdf(filename => $filename, edge_fields => ['weight']);
 
@@ -101,6 +104,23 @@ sub load_from_gdf {
 
 	close $GDF_FILE or croak "cannot close '$filename': $OS_ERROR\n";
 }
+
+
+=head2 new_from_gdf
+
+Returns a newly created network from a passed filename.
+Nodes and edges are created with the fields specified in the file.
+They are accessible as hash entries of the objects.
+
+=cut
+
+sub new_from_gdf {
+	my ($package, $filename) = @_;
+	my $net = $package->new;
+	$net->load_from_gdf($filename);
+	return $net;
+}
+
 
 
 =head2 save_to_gdf

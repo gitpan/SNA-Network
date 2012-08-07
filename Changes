@@ -1,5 +1,10 @@
 Revision history for SNA-Network
 
+0.14  2012-08-06
+      - added direct generators I<new_from_$format> in Guess and Pajek Filters
+      - added create_node method with automatic indexing
+      - pagerank algorithms accelerated by factor 2 using forward propagation of values
+
 0.13  2010-11-12
       - added algorithm for in-core collapse sequence
 

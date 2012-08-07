@@ -5,7 +5,7 @@ use strict;
 
 require Exporter;
 use base qw(Exporter);
-our @EXPORT = qw(load_from_pajek_net save_to_pajek_net);
+our @EXPORT = qw(load_from_pajek_net new_from_pajek_net save_to_pajek_net);
 
 use Carp;
 use English;
@@ -27,6 +27,9 @@ Perhaps a little code snippet.
     my $net = SNA::Network->new();
     $net->load_from_pajek_net($filename);
     ...
+    # shortcut
+    my $net = SNA::Network->new_from_pajek_net($filename);
+    ...
     $net->save_to_pajek_net($filename);
 
 
@@ -41,6 +44,9 @@ See L<http://vlado.fmf.uni-lj.si/pub/networks/pajek/> for details about the form
 The following methods are added to L<SNA::Network>.
 
 =head2 load_from_pajek_net
+
+load a network from a passed filename.
+Nodes and edges are created as specified in the file, with the vertex name in the I<name> field of the created nodes.
 
 =cut
 
@@ -81,6 +87,23 @@ sub load_from_pajek_net {
 
 	close $PAJEK_FILE or croak "cannot close '$filename': $OS_ERROR\n";
 }
+
+
+
+=head2 new_from_pajek_net
+
+Returns a newly created network from a passed filename.
+Nodes and edges are created as specified in the file, with the vertex name in the I<name> field of the created nodes.
+
+=cut
+
+sub new_from_pajek_net {
+	my ($package, $filename) = @_;
+	my $net = $package->new;
+	$net->load_from_pajek_net($filename);
+	return $net;
+}
+
 
 
 =head2 save_to_pajek_net

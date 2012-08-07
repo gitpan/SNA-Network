@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 6;
+use Test::More tests => 9;
 
 use SNA::Network;
 
@@ -10,6 +10,12 @@ $net->load_from_pajek_net('t/test-network-1.net');
 is(int $net->nodes(), 4, 'nodes read');
 is(int $net->edges(), 6, 'edges read');
 is($net->node_at_index(3)->{name}, 'D', 'node D read');
+
+my $net2 = SNA::Network->new_from_pajek_net('t/test-network-1.net');
+
+is(int $net2->nodes(), 4, 'nodes read');
+is(int $net2->edges(), 6, 'edges read');
+is($net2->node_at_index(3)->{name}, 'D', 'node D read');
 
 $net->save_to_pajek_net('t/test-network-1b.net');
 

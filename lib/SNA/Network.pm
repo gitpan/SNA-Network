@@ -31,11 +31,11 @@ SNA::Network - A toolkit for Social Network Analysis
 
 =head1 VERSION
 
-Version 0.13
+Version 0.14
 
 =cut
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 
 =head1 SYNOPSIS
@@ -78,8 +78,12 @@ this one is passed by value.
 This module was implemented mainly because I had massive problems
 understanding the internal structures of Perl's L<Graph> module.
 Despite it uses lots of arrays instead of hashes for attributes
-and bit setting for properties, it was terribly slow for my purposes.
-It has much more features and plugins though.
+and bit setting for properties, it was terribly slow for my purposes,
+especially in network manipulation (consistent node removal).
+It currently has much more features and plugins though,
+and is suitable for different network types.
+This package is focussing on directed networks only,
+with the possibility to model undirected ones as well.
 
 
 =head1 METHODS
@@ -110,6 +114,22 @@ Returns the created L<SNA::Network::Node> object.
 sub create_node_at_index {
 	my ($self, %node_attributes) = @_;
 	return $self->{nodes}->[$node_attributes{index}] = SNA::Network::Node->new(%node_attributes);
+}
+
+
+=head2 create_node
+
+Creates a node at the next index.
+Pass node attributes as additional named parameters, index is forbidden.
+Returns the created L<SNA::Network::Node> object with the right index field.
+
+=cut
+
+sub create_node {
+	my ($self, %node_attributes) = @_;
+	croak "illegally passed index to create_node method" if defined $node_attributes{index};
+	my $index = int $self->nodes;
+	return $self->create_node_at_index( index => $index, %node_attributes );
 }
 
 
