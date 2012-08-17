@@ -6,7 +6,9 @@ lib/SNA/Network/Algorithm/Betweenness.pm
 lib/SNA/Network/Algorithm/Connectivity.pm
 lib/SNA/Network/Algorithm/Cores.pm
 lib/SNA/Network/Algorithm/HITS.pm
+lib/SNA/Network/Algorithm/Louvain.pm
 lib/SNA/Network/Algorithm/PageRank.pm
+lib/SNA/Network/Community.pm
 lib/SNA/Network/Edge.pm
 lib/SNA/Network/Filter/Guess.pm
 lib/SNA/Network/Filter/Pajek.pm
@@ -17,7 +19,6 @@ lib/SNA/Network/Node/Plugin/Test.pm
 lib/SNA/Network/Plugin/Test.pm
 Makefile.PL
 MANIFEST
-MANIFEST.bak
 MANIFEST.SKIP
 META.yml
 README
@@ -33,6 +34,7 @@ t/08-generator-configuration-model.t
 t/09-algorithm-pagerank.t
 t/10-algorithm-betweenness.t
 t/11-algorithm-cores.t
+t/12-algorithm-louvain.t
 t/boilerplate.t
 t/pod-coverage.t
 t/pod.t
@@ -42,5 +44,5 @@ t/test-network-2.net
 t/test-network-3.net
 t/test-network-4.net
 t/test-network-5.net
-
+t/community-test-network-1.net
 META.json

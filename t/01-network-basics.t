@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 42;
+use Test::More tests => 45;
 use Test::Memory::Cycle;
 
 use SNA::Network;
@@ -75,11 +75,19 @@ is($node_b->in_degree, 1, 'node B indegree');
 is($node_b->out_degree, 0, 'node B outdegree');
 is($node_b->summed_degree, 1, 'node B summed degree');
 
+# loops
+my $loop = $net->create_edge(source_index => 0, target_index => 0, weight => 1);
+is( $node_a->loop, $loop, 'loop A found');
+is( $node_b->loop, undef, 'loop B not defined' );
 
 
-# deleting nodes
 my $net3 = SNA::Network->new();
 $net3->load_from_pajek_net('t/test-network-2.net');
+
+# total weight
+is( $net3->total_weight, 7, 'total weight of edges' );
+
+# deleting nodes
 $net3->delete_nodes($net3->node_at_index(2), $net3->node_at_index(4));
 memory_cycle_ok($net3, "net contains memory cycles");
 

@@ -42,6 +42,7 @@ sub calculate_in_ccs {
 	
 	foreach ($self->nodes) {
 		undef $_->{k_in_core};
+		$_->{_open_pres} = int $_->incoming_nodes;
 	}
 	
 	my $k = 0;
@@ -52,9 +53,11 @@ sub calculate_in_ccs {
 		my @recheck = ();
 		
 		foreach my $node (@open) {
-			my $open_pres = int grep { !defined $_->{k_in_core} } $node->incoming_nodes;
-			if ($open_pres < $k) {
+			if ($node->{_open_pres} < $k) {
 				$node->{k_in_core} = $k - 1;
+				foreach ($node->outgoing_nodes) {
+					$_->{_open_pres} -= 1; # unless $_->{k_in_core};
+				}
 				push @recheck, $node->outgoing_nodes;
 				#TODO check with smaller id only
 			}
@@ -65,9 +68,11 @@ sub calculate_in_ccs {
 			my $node = shift @recheck;
 			next RECHECK if defined $node->{k_in_core};
 			
-			my $open_pres = int grep { !defined $_->{k_in_core} } $node->incoming_nodes;
-			if ($open_pres < $k) {
+			if ($node->{_open_pres} < $k) {
 				$node->{k_in_core} = $k - 1;
+				foreach ($node->outgoing_nodes) {
+					$_->{_open_pres} -= 1; # unless $_->{k_in_core};
+				}
 				push @recheck, $node->outgoing_nodes;
 			}
 		}

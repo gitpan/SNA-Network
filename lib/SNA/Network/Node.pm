@@ -3,8 +3,8 @@ package SNA::Network::Node;
 use warnings;
 use strict;
 
-use List::Util qw(sum);
-use Object::Tiny::XS qw(index);
+use List::Util qw(sum first);
+use Object::Tiny::XS qw(index community);
 
 
 use Module::List::Pluggable qw(import_modules);
@@ -18,13 +18,9 @@ SNA::Network::Node - Node class for SNA::Network
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
-
-Perhaps a little code snippet.
-
-    use SNA::Network::Node;
-
-    my $foo = SNA::Network::Node->new();
+    my $node = $net->node_at_index(0);
+    my @neighbours = $node->related_nodes;
+    ...
     ...
 
 
@@ -32,7 +28,8 @@ Perhaps a little code snippet.
 
 =head2 new
 
-creates a new node with the given named parameters.
+Creates a new node with the given named parameters.
+Not intended for external use.
 
 =cut
 
@@ -197,6 +194,24 @@ sub weighted_summed_degree {
 	return 0 unless $self->edges;
 	return sum map { $_->weight() } $self->edges;
 }
+
+
+=head2 loop
+
+Returns the L<SNA::Network::Edge> object that connects this node with itself, a so-called loop, it such one exitst. Otherwise returns C<undef>.
+
+=cut
+
+sub loop {
+	my ($self) = @_;
+	return first { $_->target == $self } $self->outgoing_edges;
+}
+
+
+=head2 community
+
+Returns the index of the community the node belongs to after community identification by L<SNA::Network::Algorithm::Louvain>
+
 
 
 =head1 AUTHOR

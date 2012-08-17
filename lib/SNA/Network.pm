@@ -17,6 +17,7 @@ use SNA::Network::Algorithm::Betweenness;
 use SNA::Network::Algorithm::Connectivity;
 use SNA::Network::Algorithm::Cores;
 use SNA::Network::Algorithm::HITS;
+use SNA::Network::Algorithm::Louvain;
 use SNA::Network::Algorithm::PageRank;
 use SNA::Network::Generator::ByDensity;
 use SNA::Network::Generator::ConfigurationModel;
@@ -31,11 +32,11 @@ SNA::Network - A toolkit for Social Network Analysis
 
 =head1 VERSION
 
-Version 0.14
+Version 0.15
 
 =cut
 
-our $VERSION = '0.14';
+our $VERSION = '0.15';
 
 
 =head1 SYNOPSIS
@@ -203,6 +204,18 @@ sub edges {
 }
 
 
+=head2 total_weight
+
+Returns the sum of all weights of the L<SNA::Network::Edge> objects belonging to this network.
+
+=cut
+
+sub total_weight {
+	my ($self) = @_;
+	return sum map { $_->weight } $self->edges;
+}
+
+
 =head2 delete_nodes
 
 Delete the passed node objects.
@@ -286,6 +299,17 @@ sub _restore_edge_indexes {
 }
 
 
+=head2 communities
+
+Return a list of L<SNA::Network::Community> objects, which were identified by a previously executed community identification algorithm, usually the L<SNA::Network::Algorithm::Louvain> algorithm.
+If no such algorithm was executed, returns C<undef>.
+
+=cut
+
+sub communities {
+	my ($self) = @_;
+	return @{ $self->{communities_ref} };
+}
 
 
 =head1 PLUGIN SYSTEM
@@ -327,6 +351,8 @@ adds a new foo method to B<SNA::Network>.
 
 =item * L<SNA::Network::Edge>
 
+=item * L<SNA::Network::Community>
+
 =item * L<SNA::Network::Filter::Pajek>
 
 =item * L<SNA::Network::Filter::Guess>
@@ -338,6 +364,8 @@ adds a new foo method to B<SNA::Network>.
 =item * L<SNA::Network::Algorithm::Cores>
 
 =item * L<SNA::Network::Algorithm::HITS>
+
+=item * L<SNA::Network::Algorithm::Louvain>
 
 =item * L<SNA::Network::Algorithm::PageRank>
 
