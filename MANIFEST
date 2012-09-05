@@ -14,6 +14,7 @@ lib/SNA/Network/Filter/Guess.pm
 lib/SNA/Network/Filter/Pajek.pm
 lib/SNA/Network/Generator/ByDensity.pm
 lib/SNA/Network/Generator/ConfigurationModel.pm
+lib/SNA/Network/Generator/MCMC.pm
 lib/SNA/Network/Node.pm
 lib/SNA/Network/Node/Plugin/Test.pm
 lib/SNA/Network/Plugin/Test.pm
@@ -35,6 +36,7 @@ t/09-algorithm-pagerank.t
 t/10-algorithm-betweenness.t
 t/11-algorithm-cores.t
 t/12-algorithm-louvain.t
+t/13-generator-mcmc.t
 t/boilerplate.t
 t/pod-coverage.t
 t/pod.t

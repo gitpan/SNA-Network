@@ -1,5 +1,8 @@
 Revision history for SNA-Network
 
+0.16  2012-09-05
+      - added Markov Chain Monte Carlo (MCMC) Generator
+
 0.15  2012-08-17
       - core algorithm accelerated by an order of magnitude
       - added method total_weight() to SNA::Network

@@ -21,6 +21,7 @@ use SNA::Network::Algorithm::Louvain;
 use SNA::Network::Algorithm::PageRank;
 use SNA::Network::Generator::ByDensity;
 use SNA::Network::Generator::ConfigurationModel;
+use SNA::Network::Generator::MCMC;
 
 use Module::List::Pluggable qw(import_modules);
 import_modules('SNA::Network::Plugin');
@@ -32,11 +33,11 @@ SNA::Network - A toolkit for Social Network Analysis
 
 =head1 VERSION
 
-Version 0.15
+Version 0.16
 
 =cut
 
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 
 =head1 SYNOPSIS
@@ -372,6 +373,8 @@ adds a new foo method to B<SNA::Network>.
 =item * L<SNA::Network::Generator::ByDensity>
 
 =item * L<SNA::Network::Generator::ConfigurationModel>
+
+=item * L<SNA::Network::Generator::MCMC>
 
 =back
 

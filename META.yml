@@ -13,7 +13,7 @@ build_requires:
 configure_requires:
   Module::Build: 0.40
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4002, CPAN::Meta::Converter version 2.112150'
+generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -22,7 +22,7 @@ name: SNA-Network
 provides:
   SNA::Network:
     file: lib/SNA/Network.pm
-    version: 0.15
+    version: 0.16
   SNA::Network::Algorithm::Betweenness:
     file: lib/SNA/Network/Algorithm/Betweenness.pm
     version: 0
@@ -59,6 +59,9 @@ provides:
   SNA::Network::Generator::ConfigurationModel:
     file: lib/SNA/Network/Generator/ConfigurationModel.pm
     version: 0
+  SNA::Network::Generator::MCMC:
+    file: lib/SNA/Network/Generator/MCMC.pm
+    version: 0
   SNA::Network::Node:
     file: lib/SNA/Network/Node.pm
     version: 0
@@ -70,4 +73,4 @@ provides:
     version: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.15
+version: 0.16

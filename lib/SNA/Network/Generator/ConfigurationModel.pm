@@ -12,7 +12,7 @@ use List::Util qw(min shuffle);
 
 =head1 NAME
 
-SNA::Network::Generator::Configuration - Generate random networks according to the configuration model
+SNA::Network::Generator::ConfigurationModel - Generate random networks according to the configuration model
 
 
 =head1 SYNOPSIS

@@ -4,7 +4,7 @@
       "Darko Obradovic <dobradovic@gmx.de>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4002, CPAN::Meta::Converter version 2.112150",
+   "generated_by" : "Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "perl_5"
    ],
@@ -16,13 +16,13 @@
    "prereqs" : {
       "build" : {
          "requires" : {
-            "Carp" : 0,
-            "List::MoreUtils" : 0,
-            "List::Util" : 0,
-            "Module::List::Pluggable" : 0,
-            "Object::Tiny::XS" : 0,
-            "Test::Memory::Cycle" : 0,
-            "Test::More" : 0
+            "Carp" : "0",
+            "List::MoreUtils" : "0",
+            "List::Util" : "0",
+            "Module::List::Pluggable" : "0",
+            "Object::Tiny::XS" : "0",
+            "Test::Memory::Cycle" : "0",
+            "Test::More" : "0"
          }
       },
       "configure" : {
@@ -34,7 +34,7 @@
    "provides" : {
       "SNA::Network" : {
          "file" : "lib/SNA/Network.pm",
-         "version" : "0.15"
+         "version" : "0.16"
       },
       "SNA::Network::Algorithm::Betweenness" : {
          "file" : "lib/SNA/Network/Algorithm/Betweenness.pm",
@@ -84,6 +84,10 @@
          "file" : "lib/SNA/Network/Generator/ConfigurationModel.pm",
          "version" : 0
       },
+      "SNA::Network::Generator::MCMC" : {
+         "file" : "lib/SNA/Network/Generator/MCMC.pm",
+         "version" : 0
+      },
       "SNA::Network::Node" : {
          "file" : "lib/SNA/Network/Node.pm",
          "version" : 0
@@ -103,5 +107,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.15"
+   "version" : "0.16"
 }
