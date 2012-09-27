@@ -1,5 +1,8 @@
 Revision history for SNA-Network
 
+0.17  2012-09-27
+      - fixed the MCMC Generator not to produce multi edges
+
 0.16  2012-09-05
       - added Markov Chain Monte Carlo (MCMC) Generator
 

@@ -7,7 +7,7 @@ require Exporter;
 use base 'Exporter';
 our @EXPORT = qw(shuffle);
 
-use List::MoreUtils qw(uniq);
+use List::MoreUtils qw(uniq none);
 
 
 =head1 NAME
@@ -66,7 +66,11 @@ sub _swap_random_edges {
 	my $edge_one = $self->{edges}->[$index_one];
 	my $edge_two = $self->{edges}->[$index_two];
 	
-	if ( uniq($edge_one->source, $edge_one->target, $edge_two->source, $edge_two->target) == 4 ) {
+	if (
+		    uniq($edge_one->source, $edge_one->target, $edge_two->source, $edge_two->target) == 4
+		and none { $_ == $edge_two->target } $edge_one->source->outgoing_nodes
+		and none { $_ == $edge_one->target } $edge_two->source->outgoing_nodes
+	) {
 		# swap target nodes
 		my $edge_one_target = $edge_one->target;
 		$edge_one->{target} = $edge_two->target;
