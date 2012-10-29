@@ -34,7 +34,7 @@
    "provides" : {
       "SNA::Network" : {
          "file" : "lib/SNA/Network.pm",
-         "version" : "0.17"
+         "version" : "0.18"
       },
       "SNA::Network::Algorithm::Betweenness" : {
          "file" : "lib/SNA/Network/Algorithm/Betweenness.pm",
@@ -107,5 +107,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.17"
+   "version" : "0.18"
 }

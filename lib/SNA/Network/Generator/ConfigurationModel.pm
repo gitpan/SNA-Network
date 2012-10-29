@@ -50,23 +50,25 @@ sub generate_by_configuration_model {
 
 	# create nodes and stubs
 	foreach my $base_node ($base_network->nodes) {
-		my $random_node = $self->create_node_at_index(index => $base_node->{index}, name => 'random');
-		$random_node->{target_in_degree} = $base_node->in_degree;
-		$random_node->{target_out_degree} = $base_node->out_degree;
+		my $random_node = $self->create_node_at_index(
+			index => $base_node->index,
+			name => 'random',
+			_missing_inbound_links => $base_node->in_degree,
+			_target_out_degree => $base_node->out_degree,
+		);
 	}
 	
 	# create edges
-	foreach my $node ($self->nodes) {
+	foreach my $node (shuffle $self->nodes) {
 		my @destinations = grep {
-			$_->in_degree < $_->{target_in_degree} && $_->{index} != $node->{index}
+			$_->{_missing_inbound_links} > 0 && $_->{index} != $node->{index}
 		} shuffle $self->nodes;
 
-		@destinations = map {
-			$_->{index}
-		} @destinations[0 .. min(@destinations - 1, $node->{target_out_degree} - 1)];
+		my $last_index = min(@destinations - 1, $node->{_target_out_degree} - 1);
 		
-		foreach (@destinations) {
-			$self->create_edge( source_index => $node->{index}, target_index => $_ );
+		foreach ( @destinations[0 .. $last_index] ) {
+			$self->create_edge( source_index => $node->{index}, target_index => $_->index );
+			$_->{_missing_inbound_links} -= 1;
 		}
 	}
 }
