@@ -53,6 +53,7 @@ sub identify_communities_with_louvain {
 	}
 	my @communities = map {
 		SNA::Network::Community->new(
+			network     => $self,
 			index       => $_->index,
 			members_ref => [$_],
 			w_in        => $level > 0 ? $_->loop->weight : 0,
@@ -257,16 +258,16 @@ sub _create_next_level_network {
 	}
 	
 	my $nc = int $net->communities;
-	my @edge_weights = map { [ (0) x $nc ] } 1 .. $nc;
+	my @edge_weights = map { {} } 1 .. $nc;
 	foreach my $edge ($net->edges) {
-		$edge_weights[ $edge->source->community ]->[ $edge->target->community ] += $edge->weight;
+		$edge_weights[ $edge->source->community ]->{ $edge->target->community } += $edge->weight;
 	}
 	
 	foreach my $meta_node ($next_level_network->nodes) {
 		PEERS:
 		foreach my $peer_node ($next_level_network->nodes) {
 			next PEERS if $meta_node == $peer_node;
-			my $weight = $edge_weights[ $meta_node->index ]->[ $peer_node->index ];
+			my $weight = $edge_weights[ $meta_node->index ]->{ $peer_node->index };
 			
 			if ($weight) {
 				$next_level_network->create_edge(

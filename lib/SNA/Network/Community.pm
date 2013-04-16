@@ -6,7 +6,7 @@ use warnings;
 use Carp;
 use List::Util qw(sum);
 
-use Object::Tiny::XS qw(members_ref index w_in w_tot);
+use Object::Tiny::XS qw(network members_ref index w_in w_tot);
 
 
 =head1 NAME
@@ -35,11 +35,17 @@ Not intended for external use.
 
 sub new {
 	my ($package, %params) = @_;
+	croak 'no network passed' unless $params{network};
 	croak 'no index passed' unless defined $params{index};
 	croak 'no members_ref passed' unless $params{members_ref};	
 	my $self = bless { %params }, $package;
 	return $self;
 }
+
+
+=head2 network
+
+Returns the reference of the L<SNA::Network> object this community belongs to.
 
 
 =head2 index
@@ -73,6 +79,20 @@ Returns the sum of all edge weights between community nodes
 =head2 w_tot
 
 Returns the sum of all community node's summed degrees.
+
+
+=head2 module_value
+
+Returns the module value of this community
+
+=cut
+
+sub module_value {
+	my ($self) = @_;
+	my $net_weight = $self->network->{total_weight};
+	return $self->w_in / $net_weight - ( ( $self->w_in + $self->w_tot ) / ( 2 * $net_weight ) ) ** 2;
+}
+
 
 
 =head1 AUTHOR

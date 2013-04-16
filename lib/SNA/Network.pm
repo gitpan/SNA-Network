@@ -33,11 +33,11 @@ SNA::Network - A toolkit for Social Network Analysis
 
 =head1 VERSION
 
-Version 0.18
+Version 0.19
 
 =cut
 
-our $VERSION = '0.18';
+our $VERSION = '0.19';
 
 
 =head1 SYNOPSIS
@@ -311,6 +311,22 @@ sub communities {
 	my ($self) = @_;
 	return @{ $self->{communities_ref} };
 }
+
+
+=head2 modularity
+
+Return the modularity value based on the current communities of the network,
+which were identified by a previously executed community identification algorithm,
+usually the L<SNA::Network::Algorithm::Louvain> algorithm.
+If no such algorithm was executed, returns C<undef>.
+
+=cut
+
+sub modularity {
+	my ($self) = @_;
+	return sum map { $_->module_value } $self->communities;
+}
+
 
 
 =head1 PLUGIN SYSTEM

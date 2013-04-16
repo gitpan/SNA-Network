@@ -1,5 +1,12 @@
 Revision history for SNA-Network
 
+0.19  2013-04-16
+      - added module values and modularity methods
+      - fixed Louvain algorithm's quadratic memory consumption
+
+0.17  2012-10-29
+      - maintenance
+
 0.17  2012-09-27
       - fixed the MCMC Generator not to produce multi edges
 

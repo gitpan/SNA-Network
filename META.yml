@@ -22,7 +22,7 @@ name: SNA-Network
 provides:
   SNA::Network:
     file: lib/SNA/Network.pm
-    version: 0.18
+    version: 0.19
   SNA::Network::Algorithm::Betweenness:
     file: lib/SNA/Network/Algorithm/Betweenness.pm
     version: 0
@@ -73,4 +73,4 @@ provides:
     version: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.18
+version: 0.19
