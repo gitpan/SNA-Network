@@ -1,5 +1,9 @@
 Revision history for SNA-Network
 
+0.20  2014-11-20
+      - introduced a new community structure class
+      - Louvain method now stores the hierarchical structure
+
 0.19  2013-04-16
       - added module values and modularity methods
       - fixed Louvain algorithm's quadratic memory consumption

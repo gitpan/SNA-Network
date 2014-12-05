@@ -8,9 +8,10 @@ use base qw(Exporter);
 our @EXPORT = qw(identify_communities_with_louvain);
 
 use SNA::Network::Community;
+use SNA::Network::CommunityStructure;
 
 use List::Util qw(sum);
-use List::MoreUtils qw(uniq);
+use List::MoreUtils qw(uniq notall);
 
 
 =head1 NAME
@@ -49,11 +50,11 @@ sub identify_communities_with_louvain {
 	foreach ($self->nodes) {
 		$_->{community} = $_->index;
 		$_->{_k_i} = $_->weighted_summed_degree;
-		_propagate_new_community_id($_) if $level > 0;
 	}
 	my @communities = map {
 		SNA::Network::Community->new(
 			network     => $self,
+			level       => $level,
 			index       => $_->index,
 			members_ref => [$_],
 			w_in        => $level > 0 ? $_->loop->weight : 0,
@@ -147,12 +148,12 @@ sub identify_communities_with_louvain {
 		}
 	} while ($has_improved);
 
-	return @communities unless $has_changed;
-	$self->{louvain_levels} += 1;
-	
-	# consolidate community structure;
 	_consolidate_community_structure($self);
-	
+
+	return map { $_->subcommunities } @communities unless $has_changed;
+
+	$self->{louvain_levels} += 1;
+		
 	
 	PHASE_TWO:
 
@@ -165,12 +166,10 @@ sub identify_communities_with_louvain {
 	$self->{louvain_levels} = $next_level_network->{louvain_levels};
 	return @new_community_structure if $level > 0;
 
-	foreach my $community (@new_community_structure) {
-		$community->{members_ref} = [ grep {
-			$_->community == $community->index
-		} $self->nodes ];
-	};
-	
+	# build the hierarchical community structure
+	my @community_levels = _build_hierarchy(@new_community_structure);
+
+	$self->{community_levels} = \@community_levels;
 	$self->{communities_ref} = \@new_community_structure;
 	return int $self->communities;
 }
@@ -231,13 +230,34 @@ sub _consolidate_community_structure {
 	@{$self->{communities_ref}} = grep {
 		int $_->members > 0
 	} $self->communities;
-	
-	for my $index (0 .. int($self->communities) - 1) {
-		$self->{communities_ref}->[$index]->{index} = $index;
+
+
+	my $index = 0;
+	foreach my $community ($self->communities) {
+		$community->{index} = $index;
+
 		foreach my $member ($self->{communities_ref}->[$index]->members) {
 			$member->{community} = $index;
 		}
+
+		$index += 1;
+
+		next if $self->{louvain_levels} == 0;
+
+		my @subcommunities = map {
+			$_->{subcommunity}
+		} $community->members;
+				
+		$community->{subcommunities} = \@subcommunities;
+		undef $community->{members_ref};
 	}
+	
+#	for my $index (0 .. int($self->communities) - 1) {
+#		$self->{communities_ref}->[$index]->{index} = $index;
+#		foreach my $member ($self->{communities_ref}->[$index]->members) {
+#			$member->{community} = $index;
+#		}
+#	}
 }
 
 
@@ -283,14 +303,16 @@ sub _create_next_level_network {
 }
 
 
-sub _propagate_new_community_id {
-	my ($node) = @_;
-	if ($node->{subcommunity}) {
-		foreach my $sub_member ($node->{subcommunity}->members) {
-			$sub_member->{community} = $node->community;
-			_propagate_new_community_id($sub_member);
-		}
-	}
+sub _build_hierarchy {
+	my (@communities) = @_;
+
+	return SNA::Network::CommunityStructure->new(@communities) if $communities[0]->level == 0;
+
+	my @subcommunities = map {
+		$_->subcommunities
+	} @communities;
+
+	return _build_hierarchy(@subcommunities), SNA::Network::CommunityStructure->new(@communities);
 }
 
 

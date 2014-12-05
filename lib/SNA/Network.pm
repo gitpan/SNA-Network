@@ -6,6 +6,8 @@ use strict;
 use Carp;
 use English;
 
+use Object::Tiny::XS qw(community_levels);
+
 use Scalar::Util qw(weaken);
 use List::Util qw(sum);
 
@@ -33,11 +35,11 @@ SNA::Network - A toolkit for Social Network Analysis
 
 =head1 VERSION
 
-Version 0.19
+Version 0.20
 
 =cut
 
-our $VERSION = '0.19';
+our $VERSION = '0.20';
 
 
 =head1 SYNOPSIS
@@ -298,6 +300,13 @@ sub _restore_edge_indexes {
 		$_->{index} = $i++;
 	}
 }
+
+
+=head2 community_levels
+
+Returns an array reference containing L<SNA::Network::CommunityStructure> objects, which were identified by a previously executed community identification algorithm, usually the L<SNA::Network::Algorithm::Louvain> algorithm.
+With a hierarchical identification algorithm, the array containts the structures of the different levels from the finest-granular structure at index 0 to the most coarsely-granular structure at the last index.
+If no such algorithm had been executed, it returns C<undef>.
 
 
 =head2 communities

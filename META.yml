@@ -11,9 +11,9 @@ build_requires:
   Test::Memory::Cycle: 0
   Test::More: 0
 configure_requires:
-  Module::Build: 0.40
+  Module::Build: 0.42
 dynamic_config: 1
-generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921'
+generated_by: 'Module::Build version 0.4202, CPAN::Meta::Converter version 2.132830'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -22,55 +22,41 @@ name: SNA-Network
 provides:
   SNA::Network:
     file: lib/SNA/Network.pm
-    version: 0.19
+    version: 0.20
   SNA::Network::Algorithm::Betweenness:
     file: lib/SNA/Network/Algorithm/Betweenness.pm
-    version: 0
   SNA::Network::Algorithm::Connectivity:
     file: lib/SNA/Network/Algorithm/Connectivity.pm
-    version: 0
   SNA::Network::Algorithm::Cores:
     file: lib/SNA/Network/Algorithm/Cores.pm
-    version: 0
   SNA::Network::Algorithm::HITS:
     file: lib/SNA/Network/Algorithm/HITS.pm
-    version: 0
   SNA::Network::Algorithm::Louvain:
     file: lib/SNA/Network/Algorithm/Louvain.pm
-    version: 0
   SNA::Network::Algorithm::PageRank:
     file: lib/SNA/Network/Algorithm/PageRank.pm
-    version: 0
   SNA::Network::Community:
     file: lib/SNA/Network/Community.pm
-    version: 0
+  SNA::Network::CommunityStructure:
+    file: lib/SNA/Network/CommunityStructure.pm
   SNA::Network::Edge:
     file: lib/SNA/Network/Edge.pm
-    version: 0
   SNA::Network::Filter::Guess:
     file: lib/SNA/Network/Filter/Guess.pm
-    version: 0
   SNA::Network::Filter::Pajek:
     file: lib/SNA/Network/Filter/Pajek.pm
-    version: 0
   SNA::Network::Generator::ByDensity:
     file: lib/SNA/Network/Generator/ByDensity.pm
-    version: 0
   SNA::Network::Generator::ConfigurationModel:
     file: lib/SNA/Network/Generator/ConfigurationModel.pm
-    version: 0
   SNA::Network::Generator::MCMC:
     file: lib/SNA/Network/Generator/MCMC.pm
-    version: 0
   SNA::Network::Node:
     file: lib/SNA/Network/Node.pm
-    version: 0
   SNA::Network::Node::Plugin::Test:
     file: lib/SNA/Network/Node/Plugin/Test.pm
-    version: 0
   SNA::Network::Plugin::Test:
     file: lib/SNA/Network/Plugin/Test.pm
-    version: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.19
+version: 0.20

@@ -6,7 +6,7 @@ use warnings;
 use Carp;
 use List::Util qw(sum);
 
-use Object::Tiny::XS qw(network members_ref index w_in w_tot);
+use Object::Tiny::XS qw(network level members_ref index w_in w_tot);
 
 
 =head1 NAME
@@ -48,6 +48,12 @@ sub new {
 Returns the reference of the L<SNA::Network> object this community belongs to.
 
 
+=head2 level
+
+Returns the level this community belongs to in a hierarchical structure.
+B<0> indicates the finest-granular level.
+
+
 =head2 index
 
 Returns the index number of this community.
@@ -62,7 +68,15 @@ Returns a list of L<SNA::Network::Node> objects, which are members of this commu
 
 sub members {
 	my ($self) = @_;
-	return @{ $self->members_ref };
+	
+	if ( defined $self->members_ref ) {
+		return @{ $self->members_ref };
+	}
+	else {
+		return map {
+			$_->members
+		} $self->subcommunities;
+	}
 }
 
 
@@ -93,6 +107,19 @@ sub module_value {
 	return $self->w_in / $net_weight - ( ( $self->w_in + $self->w_tot ) / ( 2 * $net_weight ) ) ** 2;
 }
 
+
+=head2 subcommunities
+
+Returns a list of subcommunities of this community in a hierarchical structure.
+Returns C<undef> if there are no subcommunities.
+
+=cut
+
+sub subcommunities {
+	my ($self) = @_;
+	return undef unless defined $self->{subcommunities};
+	return @{ $self->{subcommunities} };
+}
 
 
 =head1 AUTHOR
